@@ -32,3 +32,14 @@ __declspec(dllexport) BOOL _hReadProcessMemory(
 
     return ReadProcessMemory(hProcess, lpBaseAddress, lpBuffer, nSize, lpNumberOfBytesRead);
 }
+
+std::wstring windowName;
+	std::getline(std::wcin, windowName);
+
+	HWND windowHandle = FindWindowW(NULL, windowName.c_str());
+	DWORD* processID = new DWORD;
+	GetWindowThreadProcessId(windowHandle, processID);
+
+	std::wcout << L"Process ID of " << windowName.c_str() << L" is: " << *processID << std::endl;
+
+	system("PAUSE");
