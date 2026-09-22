@@ -21,6 +21,7 @@ __declspec(dllexport) HANDLE _hGetCurrentProcess() {
     return GetCurrentProcess();
 }
 
+# Title add/reply
 __declspec(dllexport) BOOL _hReadProcessMemory(
     HANDLE hProcess,
     LPCVOID lpBaseAddress,
