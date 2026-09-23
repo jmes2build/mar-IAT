@@ -1,5 +1,7 @@
 # mariat
 
+[![CI](https://github.com/jmes2build/mar-IAT/actions/workflows/ci.yml/badge.svg)](https://github.com/jmes2build/mar-IAT/actions/workflows/ci.yml)
+
 A small options pricing and risk library in C++20, with a command-line front end.
 No external dependencies — just a compiler and `make`.
 

@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Cancel superseded runs on the same branch rather than paying for both.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: ${{ matrix.compiler }} / ${{ matrix.build }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler: [g++, clang++]
+        build: [make, cmake]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang
+        if: matrix.compiler == 'clang++'
+        run: sudo apt-get update && sudo apt-get install -y clang
+
+      - name: Show compiler version
+        run: ${{ matrix.compiler }} --version
+
+      - name: Build and test (make)
+        if: matrix.build == 'make'
+        run: make test CXX=${{ matrix.compiler }}
+
+      - name: Build and test (cmake)
+        if: matrix.build == 'cmake'
+        run: |
+          cmake -B build -S . -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+          cmake --build build --parallel
+          ctest --test-dir build --output-on-failure
+
+  sanitizers:
+    name: asan + ubsan
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # The test suite is pure computation, so the sanitizers mostly guard the
+      # lattice's index arithmetic and the CLI's argument handling.
+      - name: Build with sanitizers
+        run: |
+          g++ -std=c++20 -O1 -g -fsanitize=address,undefined \
+              -fno-omit-frame-pointer -Iinclude \
+              src/black_scholes.cpp src/implied_vol.cpp src/binomial.cpp \
+              tests/tests.cpp -o mariat_sanitized
+
+      - name: Run
+        env:
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+          ASAN_OPTIONS: detect_leaks=1
+        run: ./mariat_sanitized
+
+  warnings:
+    name: warnings as errors
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build with -Werror
+        run: make test CXXFLAGS="-std=c++20 -O2 -Wall -Wextra -Wpedantic -Werror -Iinclude"
+
+  cli:
+    name: cli smoke test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: make
+      - name: Price, lattice and implied vol all run
+        run: |
+          set -euo pipefail
+          ./build/bin/mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
+          ./build/bin/mariat tree  -s 90 -k 100 -t 1 -r 0.05 -v 0.2 --put --american --steps 200
+          ./build/bin/mariat iv    -s 100 -k 100 -t 1 -r 0.05 --price 10.450583572185565
+      - name: Bad input exits non-zero
+        run: |
+          if ./build/bin/mariat price -s -1 -k 100 -t 1 -v 0.2; then
+            echo "expected failure on negative spot" >&2
+            exit 1
+          fi
