@@ -10,7 +10,7 @@ LIB_OBJ  := $(LIB_SRC:%.cpp=$(OBJ)/%.o)
 ALL_OBJ  := $(LIB_OBJ) $(OBJ)/src/main.o $(OBJ)/tests/tests.o
 
 .PHONY: all test clean run
-all: $(BIN)/mariat
+all: $(BIN)/bachelier
 
 # -MMD -MP emits a .d file per object listing the headers it included, so a
 # header edit rebuilds every translation unit that sees it. Without this, a
@@ -19,19 +19,19 @@ $(OBJ)/%.o: %.cpp
 	@mkdir -p $(dir $@)
 	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -c $< -o $@
 
-$(BIN)/mariat: $(LIB_OBJ) $(OBJ)/src/main.o
+$(BIN)/bachelier: $(LIB_OBJ) $(OBJ)/src/main.o
 	@mkdir -p $(BIN)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-$(BIN)/mariat_tests: $(LIB_OBJ) $(OBJ)/tests/tests.o
+$(BIN)/bachelier_tests: $(LIB_OBJ) $(OBJ)/tests/tests.o
 	@mkdir -p $(BIN)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-test: $(BIN)/mariat_tests
-	@./$(BIN)/mariat_tests
+test: $(BIN)/bachelier_tests
+	@./$(BIN)/bachelier_tests
 
-run: $(BIN)/mariat
-	@./$(BIN)/mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
+run: $(BIN)/bachelier
+	@./$(BIN)/bachelier price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
 
 clean:
 	@rm -rf $(BUILD)

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "mariat/option.hpp"
+#include "bachelier/option.hpp"
 
-namespace mariat::binomial {
+namespace bachelier::binomial {
 
 /// Cox-Ross-Rubinstein lattice price.
 ///
@@ -25,4 +25,4 @@ Greeks greeks(const OptionSpec& spec, Exercise exercise, int steps = 512);
 /// Zero for American calls on non-dividend-paying underlyings.
 double early_exercise_premium(const OptionSpec& spec, int steps = 512);
 
-}  // namespace mariat::binomial
+}  // namespace bachelier::binomial

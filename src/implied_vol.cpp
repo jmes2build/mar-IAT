@@ -1,11 +1,11 @@
-#include "mariat/implied_vol.hpp"
+#include "bachelier/implied_vol.hpp"
 
 #include <algorithm>
 #include <cmath>
 
-#include "mariat/black_scholes.hpp"
+#include "bachelier/black_scholes.hpp"
 
-namespace mariat::implied_vol {
+namespace bachelier::implied_vol {
 namespace {
 
 double price_at(OptionSpec spec, double vol) {
@@ -110,4 +110,4 @@ std::optional<Result> solve(const OptionSpec& spec, double target_price, const S
     return Result{vol, settings.max_iterations, final_diff};
 }
 
-}  // namespace mariat::implied_vol
+}  // namespace bachelier::implied_vol

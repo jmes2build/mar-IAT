@@ -57,13 +57,13 @@ jobs:
           g++ -std=c++20 -O1 -g -fsanitize=address,undefined \
               -fno-omit-frame-pointer -Iinclude \
               src/black_scholes.cpp src/implied_vol.cpp src/binomial.cpp \
-              tests/tests.cpp -o mariat_sanitized
+              tests/tests.cpp -o bachelier_sanitized
 
       - name: Run
         env:
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
           ASAN_OPTIONS: detect_leaks=1
-        run: ./mariat_sanitized
+        run: ./bachelier_sanitized
 
   warnings:
     name: warnings as errors
@@ -82,12 +82,12 @@ jobs:
       - name: Price, lattice and implied vol all run
         run: |
           set -euo pipefail
-          ./build/bin/mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
-          ./build/bin/mariat tree  -s 90 -k 100 -t 1 -r 0.05 -v 0.2 --put --american --steps 200
-          ./build/bin/mariat iv    -s 100 -k 100 -t 1 -r 0.05 --price 10.450583572185565
+          ./build/bin/bachelier price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
+          ./build/bin/bachelier tree  -s 90 -k 100 -t 1 -r 0.05 -v 0.2 --put --american --steps 200
+          ./build/bin/bachelier iv    -s 100 -k 100 -t 1 -r 0.05 --price 10.450583572185565
       - name: Bad input exits non-zero
         run: |
-          if ./build/bin/mariat price -s -1 -k 100 -t 1 -v 0.2; then
+          if ./build/bin/bachelier price -s -1 -k 100 -t 1 -v 0.2; then
             echo "expected failure on negative spot" >&2
             exit 1
           fi

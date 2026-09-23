@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace mariat {
+namespace bachelier {
 
 enum class OptionType { Call, Put };
 
@@ -46,4 +46,4 @@ inline std::string to_string(Exercise e) {
     return e == Exercise::European ? "european" : "american";
 }
 
-}  // namespace mariat
+}  // namespace bachelier

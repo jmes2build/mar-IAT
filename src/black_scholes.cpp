@@ -1,11 +1,11 @@
-#include "mariat/black_scholes.hpp"
+#include "bachelier/black_scholes.hpp"
 
 #include <algorithm>
 #include <cmath>
 
-#include "mariat/normal.hpp"
+#include "bachelier/normal.hpp"
 
-namespace mariat {
+namespace bachelier {
 
 void OptionSpec::validate() const {
     if (!(spot > 0.0)) throw std::invalid_argument("spot must be > 0");
@@ -114,4 +114,4 @@ double parity_residual(const OptionSpec& spec) {
 }
 
 }  // namespace black_scholes
-}  // namespace mariat
+}  // namespace bachelier

@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace mariat {
+namespace bachelier {
 
 /// Standard normal probability density function.
 inline double norm_pdf(double x) {
@@ -20,4 +20,4 @@ inline double norm_cdf(double x) {
     return 0.5 * std::erfc(-x * inv_sqrt2);
 }
 
-}  // namespace mariat
+}  // namespace bachelier

@@ -1,4 +1,4 @@
-// mariat - options pricing and risk from the command line.
+// bachelier - options pricing and risk from the command line.
 
 #include <charconv>
 #include <cstdio>
@@ -8,22 +8,22 @@
 #include <string>
 #include <string_view>
 
-#include "mariat/binomial.hpp"
-#include "mariat/black_scholes.hpp"
-#include "mariat/implied_vol.hpp"
+#include "bachelier/binomial.hpp"
+#include "bachelier/black_scholes.hpp"
+#include "bachelier/implied_vol.hpp"
 
 namespace {
 
-using namespace mariat;
+using namespace bachelier;
 
 void usage() {
-    std::puts(R"(mariat - options pricing and risk
+    std::puts(R"(bachelier - options pricing and risk
 
 USAGE
-  mariat price   [options]            Black-Scholes price and Greeks
-  mariat tree    [options] [--steps N] [--american]
+  bachelier price   [options]            Black-Scholes price and Greeks
+  bachelier tree    [options] [--steps N] [--american]
                                       Binomial lattice price and Greeks
-  mariat iv      [options] --price P  Solve for implied volatility
+  bachelier iv      [options] --price P  Solve for implied volatility
 
 OPTIONS
   -s, --spot        Underlying price           (required)
@@ -38,9 +38,9 @@ OPTIONS
       --price P     Target price               (iv only)
 
 EXAMPLES
-  mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
-  mariat tree  -s 100 -k 95 -t 0.5 -r 0.03 -v 0.35 --put --american
-  mariat iv    -s 100 -k 100 -t 1 -r 0.05 --price 10.4506)");
+  bachelier price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
+  bachelier tree  -s 100 -k 95 -t 0.5 -r 0.03 -v 0.35 --put --american
+  bachelier iv    -s 100 -k 100 -t 1 -r 0.05 --price 10.4506)");
 }
 
 std::optional<double> to_double(std::string_view sv) {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "mariat/option.hpp"
+#include "bachelier/option.hpp"
 
-namespace mariat::black_scholes {
+namespace bachelier::black_scholes {
 
 /// Black-Scholes-Merton price of a European option with continuous dividends.
 double price(const OptionSpec& spec);
@@ -17,4 +17,4 @@ double forward(const OptionSpec& spec);
 /// Should equal S·e^(-qT) - K·e^(-rT) to within rounding.
 double parity_residual(const OptionSpec& spec);
 
-}  // namespace mariat::black_scholes
+}  // namespace bachelier::black_scholes

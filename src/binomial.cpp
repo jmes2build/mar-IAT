@@ -1,11 +1,11 @@
-#include "mariat/binomial.hpp"
+#include "bachelier/binomial.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
 #include <vector>
 
-namespace mariat::binomial {
+namespace bachelier::binomial {
 namespace {
 
 double payoff(const OptionSpec& spec, double underlying) {
@@ -133,4 +133,4 @@ double early_exercise_premium(const OptionSpec& spec, int steps) {
     return price(spec, Exercise::American, steps) - price(spec, Exercise::European, steps);
 }
 
-}  // namespace mariat::binomial
+}  // namespace bachelier::binomial

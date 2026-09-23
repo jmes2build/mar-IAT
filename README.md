@@ -1,12 +1,18 @@
-# mariat
+# bachelier
 
-[![CI](https://github.com/jmes2build/mar-IAT/actions/workflows/ci.yml/badge.svg)](https://github.com/jmes2build/mar-IAT/actions/workflows/ci.yml)
+[![CI](https://github.com/jmes2build/bachelier/actions/workflows/ci.yml/badge.svg)](https://github.com/jmes2build/bachelier/actions/workflows/ci.yml)
 
 A small options pricing and risk library in C++20, with a command-line front end.
 No external dependencies — just a compiler and `make`.
 
+Named for [Louis Bachelier](https://en.wikipedia.org/wiki/Louis_Bachelier), whose
+1900 thesis *Théorie de la spéculation* gave the first mathematical treatment of
+option pricing — five years before Einstein's paper on Brownian motion, and
+seventy before Black, Scholes and Merton. This library implements the lognormal
+Black-Scholes-Merton model rather than Bachelier's own arithmetic one.
+
 ```
-$ mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
+$ bachelier price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
   call  S=100.0000  K=100.0000  T=1.0000  r=0.0500  q=0.0000  vol=0.2000
 
   price         10.450584
@@ -29,7 +35,7 @@ $ mariat price -s 100 -k 100 -t 1 -r 0.05 -v 0.2
 ## Build
 
 ```sh
-make          # build the CLI into build/bin/mariat
+make          # build the CLI into build/bin/bachelier
 make test     # build and run the test suite
 make run      # build and price a sample option
 ```
@@ -43,9 +49,9 @@ cmake -B build -S . && cmake --build build && ctest --test-dir build
 ## Usage
 
 ```
-mariat price   [options]                       Black-Scholes price and Greeks
-mariat tree    [options] [--steps N] [--american]   Lattice price and Greeks
-mariat iv      [options] --price P             Solve for implied volatility
+bachelier price   [options]                       Black-Scholes price and Greeks
+bachelier tree    [options] [--steps N] [--american]   Lattice price and Greeks
+bachelier iv      [options] --price P             Solve for implied volatility
 ```
 
 | Flag | Meaning | Default |
@@ -65,7 +71,7 @@ An American put on a dividend-free underlying is worth more than its European
 twin, because exercising early recovers the strike sooner:
 
 ```
-$ mariat tree -s 90 -k 100 -t 1 -r 0.05 -v 0.2 --put --american --steps 1000
+$ bachelier tree -s 90 -k 100 -t 1 -r 0.05 -v 0.2 --put --american --steps 1000
   price         11.493351
   european      10.215080
   early-exercise premium 1.278271

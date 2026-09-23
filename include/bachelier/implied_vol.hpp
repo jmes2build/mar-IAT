@@ -2,9 +2,9 @@
 
 #include <optional>
 
-#include "mariat/option.hpp"
+#include "bachelier/option.hpp"
 
-namespace mariat::implied_vol {
+namespace bachelier::implied_vol {
 
 struct Result {
     double volatility{};
@@ -38,4 +38,4 @@ struct Bounds {
 };
 Bounds price_bounds(const OptionSpec& spec);
 
-}  // namespace mariat::implied_vol
+}  // namespace bachelier::implied_vol
